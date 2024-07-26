@@ -11,6 +11,9 @@ repositories {
 }
 
 dependencies {
+    implementation("org.pcap4j:pcap4j-core:1.8.2")
+    implementation("org.pcap4j:pcap4j-packetfactory-static:1.8.2")
+    implementation("ch.qos.logback:logback-classic:1.5.6")
     testImplementation(kotlin("test"))
 }
 
