@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.0"
     application
+    id("com.ncorti.ktfmt.gradle") version "0.19.0"
 }
 
 group = "com.bcsonto"
