@@ -1,17 +1,21 @@
-import core.CapturingTask
-import org.pcap4j.packet.Packet
+import core.NetworkSniffer
 
 fun main(args: Array<String>) {
-  val packetRegistry = ArrayList<Packet>()
+  val networkSniffer = NetworkSniffer()
+  networkSniffer.captureAll()
 
-  val capturingTask = CapturingTask(packetRegistry)
-  //    val capturingThread = Thread(capturingTask)
-  //    capturingThread.start()
-  //
-  //    println("Its non-blocking")
-  //    Thread.sleep(250)
-  //    capturingTask.stopCapturing()
-  //    println(capturingThread.isAlive)
-  //    val udpPackets = packetRegistry.mapNotNull { it.get(UdpPacket::class.java) }
-  //    println(udpPackets)
+  val packetsToQuery = ArrayList<String>()
+  while (true) {
+    val input = readln()
+    if (input == "stop") {
+      networkSniffer.stopCapture()
+      break
+    }
+    packetsToQuery.add(input)
+  }
+
+  val resultPackets = networkSniffer.query(packetsToQuery.joinToString(","))
+  println(resultPackets)
+
 }
+
