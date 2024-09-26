@@ -1,6 +1,10 @@
 package core
 
-import org.pcap4j.packet.*
+import org.pcap4j.packet.ArpPacket
+import org.pcap4j.packet.DnsPacket
+import org.pcap4j.packet.Packet
+import org.pcap4j.packet.TcpPacket
+import org.pcap4j.packet.UdpPacket
 
 
 class PacketRepository {
