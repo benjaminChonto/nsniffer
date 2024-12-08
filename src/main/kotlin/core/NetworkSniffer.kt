@@ -12,6 +12,7 @@ class NetworkSniffer {
   private val logger: KLogger = KotlinLogging.logger {}
   private var repository: PacketRepository = PacketRepository()
   private val snapLen = 65536
+  private val validQueries = listOf("tcp", "udp", "dns", "arp")
 
   init {
     val interfaces = Pcaps.findAllDevs().filter { it.isRunning }
@@ -38,7 +39,10 @@ class NetworkSniffer {
   }
 
   fun query(query: String): List<Packet> {
-    return query.split(",").flatMap { repository.query(it) }.toList()
+    return query.split(",")
+      .filter { validQueries.contains(it) }
+      .flatMap { repository.query(it) }
+      .toList()
   }
 
 }

@@ -31,7 +31,10 @@ class PacketRepository {
             "arp" to ArpPacket::class.java
         )
         // for now let's say that query can only be a network protocol
-        return packets.mapNotNull { it.get(queryMap[query]) }
+        return packets.mapNotNull {
+            println("querying: $query")
+            it.get(queryMap[query])
+        }
     }
 
 }
