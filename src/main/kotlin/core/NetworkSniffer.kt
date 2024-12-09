@@ -1,10 +1,12 @@
 package core
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mu.KLogger
 import mu.KotlinLogging
 import org.pcap4j.core.PcapNetworkInterface
 import org.pcap4j.core.Pcaps
-import org.pcap4j.packet.Packet
 
 class NetworkSniffer {
 
@@ -29,7 +31,11 @@ class NetworkSniffer {
     if (captureTaskMap.isEmpty()) {
       logger.debug { "Cannot capture, because no network interfaces were found" }
     }
-    captureTaskMap.forEach { Thread(it.value).start() }
+      captureTaskMap.forEach {
+        GlobalScope.launch (Dispatchers.IO) {
+          it.value.capture()
+        }
+      }
   }
 
   fun stopCapture() {
@@ -38,11 +44,10 @@ class NetworkSniffer {
     captureTaskMap.forEach { it.value.clear() }
   }
 
-  fun query(query: String): List<Packet> {
-    return query.split(",")
+  fun query(query: String): Map<String, List<PacketSummary>> {
+    return query.split(",").toSet()
       .filter { validQueries.contains(it) }
-      .flatMap { repository.query(it) }
-      .toList()
+      .associateWith { repository.query(it) }
   }
 
 }

@@ -16,6 +16,7 @@ dependencies {
     implementation("org.pcap4j:pcap4j-packetfactory-static:1.8.2")
     implementation("ch.qos.logback:logback-classic:1.5.6")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     testImplementation(kotlin("test"))
 }
 
