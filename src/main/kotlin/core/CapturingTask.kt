@@ -4,10 +4,7 @@ import mu.KotlinLogging
 import org.pcap4j.core.PacketListener
 import org.pcap4j.core.PcapHandle
 
-class CapturingTask(
-    val pcapHandle: PcapHandle,
-    val packetRegistry: PacketRepository
-) {
+class CapturingTask(val pcapHandle: PcapHandle, val packetRegistry: PacketRepository) {
   private val logger = KotlinLogging.logger {}
 
   fun stopCapturing() {

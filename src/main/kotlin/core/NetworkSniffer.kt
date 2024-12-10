@@ -19,23 +19,21 @@ class NetworkSniffer {
   init {
     val interfaces = Pcaps.findAllDevs().filter { it.isRunning }
     logger.info { "Found ${interfaces.size} open interfaces: ${interfaces.map { it.name }}" }
-    captureTaskMap = interfaces.associate {
-      val pcapHandle = it.openLive(snapLen, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 10)
-      val packetRepository = PacketRepository()
-      val capturingTask = CapturingTask(pcapHandle, packetRepository)
-      it.name to capturingTask
-    }
+    captureTaskMap =
+        interfaces.associate {
+          val pcapHandle =
+              it.openLive(snapLen, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 10)
+          val packetRepository = PacketRepository()
+          val capturingTask = CapturingTask(pcapHandle, packetRepository)
+          it.name to capturingTask
+        }
   }
 
   fun captureAll() {
     if (captureTaskMap.isEmpty()) {
       logger.debug { "Cannot capture, because no network interfaces were found" }
     }
-      captureTaskMap.forEach {
-        GlobalScope.launch (Dispatchers.IO) {
-          it.value.capture()
-        }
-      }
+    captureTaskMap.forEach { GlobalScope.launch(Dispatchers.IO) { it.value.capture() } }
   }
 
   fun stopCapture() {
@@ -45,9 +43,10 @@ class NetworkSniffer {
   }
 
   fun query(query: String): Map<String, List<PacketSummary>> {
-    return query.split(",").toSet()
-      .filter { validQueries.contains(it) }
-      .associateWith { repository.query(it) }
+    return query
+        .split(",")
+        .toSet()
+        .filter { validQueries.contains(it) }
+        .associateWith { repository.query(it) }
   }
-
 }
