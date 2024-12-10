@@ -46,7 +46,7 @@ fun DnsPacket.summary(ip: IpPacket?): DnsPacketSummary =
         ip?.header?.srcAddr,
         ip?.header?.dstAddr,
         this.header.questions.map { it.qName }.joinToString("\n"),
-        this.header.answers.map { it.name }.joinToString("\n"),
+        this.header.answers.map { it.rData }.joinToString("\n"),
     )
 
 fun ArpPacket.summary(ip: IpPacket?): ArpSummary =
